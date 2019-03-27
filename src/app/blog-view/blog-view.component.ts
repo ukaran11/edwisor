@@ -1,22 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 // importing route related code
 import { ActivatedRoute, Router } from '@angular/router';
+import { BlogService } from '../blog.service';
 
 @Component({
   selector: 'app-blog-view',
   templateUrl: './blog-view.component.html',
   styleUrls: ['./blog-view.component.css']
 })
-export class BlogViewComponent implements OnInit {
+export class BlogViewComponent implements OnInit, OnDestroy {
+  
+  // empty object
+  public currentBlog;
 
-  constructor(private _route: ActivatedRoute, private router: Router) {
+ 
+
+  constructor(private _route: ActivatedRoute, private router: Router, public blogService:BlogService) {
 
   }
 
   ngOnInit() {
-    console.log("ngOnInitCalled");
+    console.log("blog view ngOnInit Called");
     let myBlogId = this._route.snapshot.paramMap.get('blogId');
     console.log(myBlogId);
+    //calling the function to get the blog with this blogId out of the overall array
+    this.currentBlog = this.blogService.getSingleBlogInformation(myBlogId);
+    console.log(this.currentBlog);
   }
+  ngOnDestroy(){
+    console.log("blog view destroyed");
+  }
+
+ 
 
 }
